@@ -6,7 +6,7 @@ from datetime import datetime
 # ----------------------------
 # CONFIGURATION
 # ----------------------------
-INPUT_FOLDER = r"C:\Reports\8March"     # Folder containing Tosca JSON files
+INPUT_FOLDER = r"C:\Reports\9March"     # Folder containing Tosca JSON files
 OUTPUT_FOLDER = r"C:\AutomationReports"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
@@ -27,7 +27,36 @@ step_details_map = {
     "07 POST local-transfer/Prepare Request": "Prepare transfer request",
     "08_Get Otp": "Get OTP",
     "09 POST local-transfer/Transfer Request": "Perform transfer",
-    "09 POST user-accounts-transfer/Transfer": "Perform transfer"
+    "09 POST user-accounts-transfer/Transfer": "Perform transfer",
+    "06_POST Account Validate": "Validate transfer request",
+    "07_POST Prepare Amount Transfer": "Prepare transfer request",
+    "09_POST Transfer Amount": "Perform transfer",
+    "06_POST user-accounts-transfer/Validate": "Validate transfer request",
+    "07_POST user-accounts-transfer/Prepare": "Prepare transfer request",
+    "08_POST user-accounts-transfer/Transfer": "Perform transfer",
+    "06_POST_charity-transfer/Validate": "Validate transfer request",
+    "07_POST_charity-transfer/Prepare": "Prepare transfer request",
+    "09_POST_charity-transfer/Transfer": "Perform transfer",
+    "06_POST local-transfer/Validate Request": "Validate transfer request",
+    "07_POST local-transfer/Prepare Request": "Prepare transfer request",
+    "09_POST local-transfer/Transfer Request": "Perform transfer",
+    "06_GET Currencies": "Get Currency",
+    "07_POST alinma-express/convert-Currency": "Convert Currency",
+    "08_POST alinma-express/validate": "Validate transfer request",
+    "09_POST alinma-express/prepare": "Prepare transfer request",
+    "10_Get Otp": "Get OTP",
+    "11_POST alinma-express/transfer": "Perform transfer",
+    "06_POST Convert Currency": "Convert Currency",
+    "07_GET Currency": "Get Currency",
+    "08_POST swift-transfer/Validate": "Validate transfer request",
+    "09_POST swift-transfer/Prepare": "Prepare transfer request",
+    "11_POST swift-transfer/Transfer": "Perform transfer",
+    "06_POST westernUnion/convert-currency": "Convert Currency",
+    "07_POST westernUnion/validate": "Validate transfer request",
+    "08_POST westernUnion/prepare": "Prepare transfer request",
+    "09_Get Otp": "Get OTP",
+    "10_POST westernUnion/Transfer": "Perform transfer"
+
     # Add other mappings as needed
 }
 
@@ -127,10 +156,10 @@ for file in INPUT_FILES:
 # ----------------------------
 project_name = 'Internet Banking - API'
 environment_name = "UAT"
-executed_user = "nmbadge@alinma.com"
+executed_user = "Nitesh Badge"
 automation_type = "API"
 module_name = "Transfer"
-
+testing_type = "Smoke Suite"
 
 html_content = f"""
 <html>
@@ -216,7 +245,7 @@ tr:hover {{
         <p style="margin: 5px 0; font-size: 16px; color: #555;">
            <b>Module Name:</b> {module_name} &nbsp;|&nbsp; 
             <b>Environment:</b> {environment_name} &nbsp;|&nbsp;    
-            <b>Automation Type:</b> {automation_type} &nbsp;|&nbsp; 
+            <b>Test Execution:</b> {testing_type} &nbsp;|&nbsp; 
             <b>Executed By:</b> {executed_user}
         </p>
         <p style="margin: 5px 0; font-size: 14px; color: #888;">
