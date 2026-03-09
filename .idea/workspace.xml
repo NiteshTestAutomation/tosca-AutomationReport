@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="47ea38d1-51ad-4347-ada3-dd40ab92fd7a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/ToscaReport.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/Combined_Report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/Combined_Tosca_Report.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/applyJobs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/email_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/generate_html.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/generate_json_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/generate_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/generate_text_csv_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/generate_text_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test4.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test6.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test7.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/test9_toscaAutomationReport.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/updated_generate_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/updated_generate_text_csv_report.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/updated_generate_text_csv_report_html.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/updated_generate_text_csv_report_html_v2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/updated_generate_text_csv_reporthtml.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/report_template.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="3AFfatdIg2BI7pylTU3yFRSD9wZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.applyJobs.executor": "Run",
+    "Python.generate_html.executor": "Run",
+    "Python.generate_report.executor": "Run",
+    "Python.generate_text_csv_report.executor": "Run",
+    "Python.generate_text_report.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.test1.executor": "Run",
+    "Python.test2.executor": "Run",
+    "Python.test3.executor": "Run",
+    "Python.test4.executor": "Run",
+    "Python.test5.executor": "Run",
+    "Python.test6.executor": "Run",
+    "Python.test7.executor": "Run",
+    "Python.test8.executor": "Run",
+    "Python.updated_generate_text_csv_report.executor": "Run",
+    "Python.updated_generate_text_csv_report_html.executor": "Run",
+    "Python.updated_generate_text_csv_report_html_v2.executor": "Run",
+    "Python.updated_generate_text_csv_reporthtml.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\PycharmProjects\ToscaReport\scripts" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-09665e90c3a7-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.15026.15" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="47ea38d1-51ad-4347-ada3-dd40ab92fd7a" name="Changes" comment="" />
+      <created>1772193305963</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772193305963</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/scripts/test3.py</url>
+          <line>46</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

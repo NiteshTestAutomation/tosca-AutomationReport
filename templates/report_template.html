@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Tosca Automation Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body { font-family: Arial; margin:40px;}
+.pass { color:green; font-weight:bold;}
+.fail { color:red; font-weight:bold;}
+table { border-collapse: collapse; width:100%;}
+th,td { border:1px solid #ddd; padding:8px;}
+</style>
+
+</head>
+
+<body>
+
+<h1>Tosca Automation Dashboard</h1>
+<p>Generated: {{date}}</p>
+
+<h2>Execution Summary</h2>
+
+<ul>
+<li>Total: {{total}}</li>
+<li class="pass">Passed: {{passed}}</li>
+<li class="fail">Failed: {{failed}}</li>
+</ul>
+
+<canvas id="resultChart"></canvas>
+
+<h2>Test Details</h2>
+
+<table>
+<tr>
+<th>Name</th>
+<th>Result</th>
+<th>Duration</th>
+</tr>
+
+{% for t in tests %}
+<tr>
+<td>{{t.name}}</td>
+<td class="{{'pass' if t.result=='Passed' else 'fail'}}">
+{{t.result}}
+</td>
+<td>{{t.duration}} sec</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<h2>Trend History</h2>
+<canvas id="trendChart"></canvas>
+
+<script>
+new Chart(document.getElementById('resultChart'), {
+type:'pie',
+data:{
+labels:['Passed','Failed'],
+datasets:[{
+data:[{{passed}},{{failed}}]
+}]
+}
+});
+
+new Chart(document.getElementById('trendChart'), {
+type:'line',
+data:{
+labels:[
+{% for h in history %}
+"{{h.date}}",
+{% endfor %}
+],
+datasets:[
+{
+label:'Passed',
+data:[
+{% for h in history %}
+{{h.passed}},
+{% endfor %}
+]
+},
+{
+label:'Failed',
+data:[
+{% for h in history %}
+{{h.failed}},
+{% endfor %}
+]
+}
+]
+}
+});
+</script>
+
+</body>
+
+</html>
