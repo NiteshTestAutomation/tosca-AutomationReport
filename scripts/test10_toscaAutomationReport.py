@@ -7,7 +7,7 @@ from datetime import datetime
 # ----------------------------
 # CONFIGURATION
 # ----------------------------
-INPUT_FOLDER = r"C:\Reports\10March"  # Folder containing Tosca JSON files
+INPUT_FOLDER = r"C:\Reports\10March"
 OUTPUT_FOLDER = r"C:\AutomationReports"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
@@ -18,6 +18,7 @@ OUTPUT_FILE = os.path.join(OUTPUT_FOLDER, f"Tosca_Execution_Report_{timestamp}.h
 # STEP DESCRIPTION MAPPING (optional)
 # ----------------------------
 step_details_map = {
+
     "01_POST_LoginAuth": "Authenticate user via API",
     "02_GET_Encrypt_UserName": "Encrypt username",
     "03_GET_Encrypt_Password": "Encrypt password",
@@ -56,12 +57,13 @@ step_details_map = {
     "08_POST westernUnion/prepare": "Prepare transfer request",
     "09_Get Otp": "Get OTP",
     "10_POST westernUnion/Transfer": "Perform transfer"
+    # add your other mappings as needed
 }
 
 fail_keywords = ["error", "fail", "exception", "timeout"]
 
 # ----------------------------
-# FIND ALL JSON FILES
+# FIND JSON FILES
 # ----------------------------
 INPUT_FILES = glob.glob(os.path.join(INPUT_FOLDER, "*.json"))
 if not INPUT_FILES:
@@ -71,7 +73,7 @@ if not INPUT_FILES:
 print(f"Found {len(INPUT_FILES)} JSON files")
 
 # ----------------------------
-# MERGE JSON REPORTS
+# PARSE JSON AND MERGE TEST CASES
 # ----------------------------
 testcases = []
 total_steps = 0
@@ -81,10 +83,8 @@ total_tc_passed = 0
 total_tc_failed = 0
 
 for file in INPUT_FILES:
-    print("Reading:", file)
     with open(file, "r", encoding="utf-8") as f:
         data = json.load(f)
-
         pages = data.get("Document", {}).get("Pages", [])
         for page in pages:
             tables = page.get("Tables", [])
@@ -96,19 +96,19 @@ for file in INPUT_FILES:
                 # TestCase name = first line
                 tc_name = body_lines[0].get("unnamed_0", "Unknown TestCase")
                 steps = []
-                tc_buffers = {}  # <-- store all buffers for this test case
+                tc_buffers = {}  # store buffers
 
                 for line in body_lines[1:]:
                     step_name = line.get("Name", "").strip()
                     if step_name == "":
                         continue
 
-                    # Capture buffers from loginfo
-                    loginfo = line.get("Loginfo", "").strip()
-                    if "Buffer with name" in loginfo:
+                    # Capture buffers from ActionMode or Loginfo
+                    combined_text = (line.get("ActionMode", "") + " " + line.get("Loginfo", "")).strip()
+                    if "Buffer with name" in combined_text:
                         match = re.search(
                             r'Buffer with name:\s*"([^"]+)"\s*has been set to value:\s*"([^"]+)"',
-                            loginfo
+                            combined_text
                         )
                         if match:
                             buffer_name = match.group(1)
@@ -124,13 +124,11 @@ for file in INPUT_FILES:
                     duration = line.get("Duration", "").strip()
 
                     # Step status based on Detail or Loginfo
-                    combined_text = (details + " " + loginfo).lower()
-                    status = "Failed" if any(k in combined_text for k in fail_keywords) else "Passed"
+                    status = "Failed" if any(k in combined_text.lower() for k in fail_keywords) else "Passed"
 
                     # Optional description mapping
-                    if step_name in step_details_map:
-                        custom = step_details_map[step_name]
-                        details = f"{details} ({custom})" if details else custom
+                    custom_desc = step_details_map.get(step_name, "")
+                    details = f"{details} ({custom_desc})" if details else custom_desc
 
                     steps.append({
                         "step": step_name,
@@ -142,13 +140,11 @@ for file in INPUT_FILES:
                     })
 
                 if steps:
-                    # Update step counters
                     total_steps += len(steps)
                     total_steps_passed += sum(1 for s in steps if s["status"] == "Passed")
                     total_steps_failed += sum(1 for s in steps if s["status"] == "Failed")
 
-                    # TestCase status
-                    tc_status = "Failed" if any(s["status"] == "Failed" for s in steps) else "Passed"
+                    tc_status = "Failed" if any(s["status"]=="Failed" for s in steps) else "Passed"
                     if tc_status == "Failed":
                         total_tc_failed += 1
                     else:
@@ -159,13 +155,13 @@ for file in INPUT_FILES:
                         "steps": steps,
                         "status": tc_status,
                         "source": os.path.basename(file),
-                        "buffers": tc_buffers  # <-- store buffers here
+                        "buffers": tc_buffers
                     })
 
 # ----------------------------
-# BUILD HTML REPORT WITH SUMMARY
+# BUILD HTML REPORT
 # ----------------------------
-project_name = 'Internet Banking - API'
+project_name = "Internet Banking - API"
 environment_name = "UAT"
 executed_user = "Nitesh Badge"
 module_name = "Transfer"
@@ -187,8 +183,6 @@ th {{ background-color: #007bff; color: white; }}
 tr:nth-child(even) {{ background-color: #f9f9f9; }}
 tr:hover {{ background-color: #f1f1f1; }}
 .summary {{ text-align: center; margin: 15px; font-size: 14px; }}
-
-
 .card {{
     max-width: 900px;
     margin: 10px auto;       /* reduced bottom margin */
@@ -208,47 +202,34 @@ tr:hover {{ background-color: #f1f1f1; }}
 <h1>QA API Automation Execution Report</h1>
 
 <div class="card">
-    <div style="text-align: center; margin-bottom: 20px;">
-        <h2 style="margin-top: 5px; margin-bottom: 10px;">{project_name} Execution Summary</h2>
+<div style="text-align: center; margin-bottom: 20px;">
+ <h2 style="margin-top: 5px; margin-bottom: 10px;">{project_name} Execution Summary</h2>
         <p><b>Module Name:</b> {module_name} &nbsp;|&nbsp; 
            <b>Environment:</b> {environment_name} &nbsp;|&nbsp;    
            <b>Test Execution:</b> {testing_type} &nbsp;|&nbsp; 
            <b>Executed By:</b> {executed_user}</p>
-    </div>
+</div>
 
-    <div class="summary-box">
-        <div class="summary-item total">Total API TestCases<br>{len(testcases)}</div>
-        <div class="summary-item passed">Passed TestCases<br>{total_tc_passed}</div>
-        <div class="summary-item failed">Failed TestCases<br>{total_tc_failed}</div>
-    </div>
+<div class="summary-box">
+<div class="summary-item total">Total API TestCases<br>{len(testcases)}</div>
+<div class="summary-item passed">Passed TestCases<br>{total_tc_passed}</div>
+<div class="summary-item failed">Failed TestCases<br>{total_tc_failed}</div>
+</div>
 </div>
 """
 
 # ----------------------------
-# ADD TESTCASES AND BUFFERS
+# ADD TEST CASES AND BUFFERS
 # ----------------------------
 for tc in testcases:
-    steps = tc["steps"]
     tc_class = "fail" if tc["status"]=="Failed" else "pass"
 
-    # # Buffer table
-    # buffers = tc.get("buffers", {})
-    # buffer_html = ""
-    # if buffers:
-    #     buffer_html += "<table><tr><th>Buffer Name</th><th>Value</th></tr>"
-    #     for name, value in buffers.items():
-    #         buffer_html += f"<tr><td>{name}</td><td>{value}</td></tr>"
-    #     buffer_html += "</table>"
+    # Prepare session/buffer info
+    buffer_html = ""
+    if tc.get("buffers"):
+        buffer_html = " | ".join([f"{v}" for k,v in tc["buffers"].items()])
 
-    # html_content += f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> (Source: {tc['source']})</h2>"
-    # html_content += buffer_html
-
-    # Get sessionReference from buffers if available
-    session_value = tc.get("buffers", {}).get("b_sessionReference", "N/A")
-
-    # Add session value directly in heading
-    html_content += f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> (Session Id: {session_value})</h2>"
-
+    html_content += f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> (Session: {buffer_html})</h2>"
 
     # Steps table
     html_content += """
@@ -261,7 +242,7 @@ for tc in testcases:
         <th>Status</th>
     </tr>
     """
-    for step in steps:
+    for step in tc["steps"]:
         status_class = "pass" if step["status"]=="Passed" else "fail"
         html_content += f"""
         <tr>
@@ -282,5 +263,5 @@ html_content += "</body></html>"
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
     f.write(html_content)
 
-print("\nMerged JSON HTML report with summary & buffers generated successfully!")
+print("\nMerged JSON HTML report with sessions & buffers generated successfully!")
 print("Saved at:", OUTPUT_FILE)
