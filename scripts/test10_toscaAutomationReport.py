@@ -187,7 +187,16 @@ th {{ background-color: #007bff; color: white; }}
 tr:nth-child(even) {{ background-color: #f9f9f9; }}
 tr:hover {{ background-color: #f1f1f1; }}
 .summary {{ text-align: center; margin: 15px; font-size: 14px; }}
-.card {{ max-width: 900px; margin: 20px auto 40px auto; border: 1px solid #ddd; border-radius: 12px; background-color: #fff; padding: 30px 40px; }}
+
+
+.card {{
+    max-width: 900px;
+    margin: 10px auto;       /* reduced bottom margin */
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    padding: 15px 20px;      /* reduced padding */
+}}
 .summary-box {{ display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 20px; }}
 .summary-item {{ text-align: center; padding: 10px 20px; border-radius: 8px; min-width: 120px; }}
 .total {{ background-color: #e6f0ff; color: #007bff; font-weight: bold; }}
@@ -196,11 +205,11 @@ tr:hover {{ background-color: #f1f1f1; }}
 </style>
 </head>
 <body>
-<h1>Alinma QA Automation Execution Report</h1>
+<h1>QA API Automation Execution Report</h1>
 
 <div class="card">
     <div style="text-align: center; margin-bottom: 20px;">
-        <h2>{project_name} Execution Summary</h2>
+        <h2 style="margin-top: 5px; margin-bottom: 10px;">{project_name} Execution Summary</h2>
         <p><b>Module Name:</b> {module_name} &nbsp;|&nbsp; 
            <b>Environment:</b> {environment_name} &nbsp;|&nbsp;    
            <b>Test Execution:</b> {testing_type} &nbsp;|&nbsp; 
@@ -208,12 +217,9 @@ tr:hover {{ background-color: #f1f1f1; }}
     </div>
 
     <div class="summary-box">
-        <div class="summary-item total">Total TestCases<br>{len(testcases)}</div>
+        <div class="summary-item total">Total API TestCases<br>{len(testcases)}</div>
         <div class="summary-item passed">Passed TestCases<br>{total_tc_passed}</div>
         <div class="summary-item failed">Failed TestCases<br>{total_tc_failed}</div>
-        <div class="summary-item total">Total Steps<br>{total_steps}</div>
-        <div class="summary-item passed">Steps Passed<br>{total_steps_passed}</div>
-        <div class="summary-item failed">Steps Failed<br>{total_steps_failed}</div>
     </div>
 </div>
 """
