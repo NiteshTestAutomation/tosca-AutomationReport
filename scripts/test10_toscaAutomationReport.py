@@ -18,7 +18,6 @@ OUTPUT_FILE = os.path.join(OUTPUT_FOLDER, f"Tosca_Execution_Report_{timestamp}.h
 # STEP DESCRIPTION MAPPING (optional)
 # ----------------------------
 step_details_map = {
-
     "01_POST_LoginAuth": "Authenticate user via API",
     "02_GET_Encrypt_UserName": "Encrypt username",
     "03_GET_Encrypt_Password": "Encrypt password",
@@ -38,9 +37,6 @@ step_details_map = {
     "06_POST_charity-transfer/Validate": "Validate transfer request",
     "07_POST_charity-transfer/Prepare": "Prepare transfer request",
     "09_POST_charity-transfer/Transfer": "Perform transfer",
-    "06_POST local-transfer/Validate Request": "Validate transfer request",
-    "07_POST local-transfer/Prepare Request": "Prepare transfer request",
-    "09_POST local-transfer/Transfer Request": "Perform transfer",
     "06_GET Currencies": "Get Currency",
     "07_POST alinma-express/convert-Currency": "Convert Currency",
     "08_POST alinma-express/validate": "Validate transfer request",
@@ -57,7 +53,6 @@ step_details_map = {
     "08_POST westernUnion/prepare": "Prepare transfer request",
     "09_Get Otp": "Get OTP",
     "10_POST westernUnion/Transfer": "Perform transfer"
-    # add your other mappings as needed
 }
 
 fail_keywords = ["error", "fail", "exception", "timeout"]
@@ -72,7 +67,6 @@ if not INPUT_FILES:
 
 print(f"Found {len(INPUT_FILES)} JSON files")
 
-
 # ----------------------------
 # PARSE JSON AND MERGE TEST CASES
 # ----------------------------
@@ -85,7 +79,6 @@ total_tc_failed = 0
 
 def sum_durations(steps):
     total_ms = 0
-
     for step in steps:
         duration = step.get("duration", "").strip()
         if duration:
@@ -95,11 +88,9 @@ def sum_durations(steps):
                 total_ms += (int(mins) * 60 + int(secs)) * 1000 + int(ms)
             except:
                 pass
-
     minutes = total_ms // 60000
     seconds = (total_ms % 60000) // 1000
     milliseconds = total_ms % 1000
-
     return f"{minutes:02}:{seconds:02}.{milliseconds:03}"
 
 for file in INPUT_FILES:
@@ -112,18 +103,13 @@ for file in INPUT_FILES:
                 if table.get("ID") != "TreeStructure":
                     continue
                 body_lines = table.get("BodyLines", [])
-
-                # TestCase name = first line
                 tc_name = body_lines[0].get("unnamed_0", "Unknown TestCase")
                 steps = []
-                tc_buffers = {}  # store buffers
-
+                tc_buffers = {}
                 for line in body_lines[1:]:
                     step_name = line.get("Name", "").strip()
                     if step_name == "":
                         continue
-
-                    # Capture buffers from ActionMode or Loginfo
                     combined_text = (line.get("ActionMode", "") + " " + line.get("Loginfo", "")).strip()
                     if "Buffer with name" in combined_text:
                         match = re.search(
@@ -134,22 +120,14 @@ for file in INPUT_FILES:
                             buffer_name = match.group(1)
                             buffer_value = match.group(2)
                             tc_buffers[buffer_name] = buffer_value
-
-                    # Skip steps not in mapping
                     if step_name not in step_details_map:
                         continue
-
                     details = line.get("Detail", "").strip()
                     exec_time = line.get("StartTime", "").strip()
                     duration = line.get("Duration", "").strip()
-
-                    # Step status based on Detail or Loginfo
                     status = "Failed" if any(k in combined_text.lower() for k in fail_keywords) else "Passed"
-
-                    # Optional description mapping
                     custom_desc = step_details_map.get(step_name, "")
                     details = f"{details} ({custom_desc})" if details else custom_desc
-
                     steps.append({
                         "step": step_name,
                         "details": details,
@@ -158,19 +136,16 @@ for file in INPUT_FILES:
                         "status": status,
                         "source": os.path.basename(file)
                     })
-
                 if steps:
                     total_steps += len(steps)
                     tc_total_duration = sum_durations(steps)
                     total_steps_passed += sum(1 for s in steps if s["status"] == "Passed")
                     total_steps_failed += sum(1 for s in steps if s["status"] == "Failed")
-
                     tc_status = "Failed" if any(s["status"]=="Failed" for s in steps) else "Passed"
                     if tc_status == "Failed":
                         total_tc_failed += 1
                     else:
                         total_tc_passed += 1
-
                     testcases.append({
                         "name": tc_name,
                         "steps": steps,
@@ -205,22 +180,46 @@ th {{ background-color: #007bff; color: white; }}
 tr:nth-child(even) {{ background-color: #f9f9f9; }}
 tr:hover {{ background-color: #f1f1f1; }}
 .summary {{ text-align: center; margin: 15px; font-size: 14px; }}
-.card {{
-    max-width: 900px;
-    margin: 10px auto;       /* reduced bottom margin */
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background-color: #fff;
-    padding: 15px 20px;      /* reduced padding */
-}}
+.card {{ max-width: 900px; margin: 10px auto; border: 1px solid #ddd; border-radius: 12px; background-color: #fff; padding: 15px 20px; }}
 .summary-box {{ display: flex; justify-content: center; flex-wrap: wrap; gap: 25px; margin-top: 20px; }}
 .summary-item {{ text-align: center; padding: 10px 20px; border-radius: 8px; min-width: 120px; }}
 .total {{ background-color: #e6f0ff; color: #007bff; font-weight: bold; }}
 .passed {{ background-color: #e6ffe6; color: green; font-weight: bold; }}
 .failed {{ background-color: #ffe6e6; color: red; font-weight: bold; }}
+.collapsible {{ background-color: #007bff; color: white; cursor: pointer; padding: 10px 12px; width: 95%; margin: 0 auto; border: none; text-align: left; font-size: 14px; border-radius: 6px; }}
+.collapsible:hover {{ background-color: #0056b3; }}
+.content {{ width: 95%; margin: 0 auto 20px auto; display: none; overflow: hidden; }}
+.tc-container {{
+    width: 95%;              /* match table width */
+    margin: 0 auto 20px auto; /* center aligned with table */
+}}
+
+.collapsible {{
+    width: 100%;             /* full width of container */
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    padding: 10px 12px;
+    border: none;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 6px;
+}}
+
+.collapsible:hover {{
+    background-color: #0056b3;
+}}
+
+.content {{
+    width: 100%;             /* full width of container */
+    display: none;
+    overflow: hidden;
+    margin-top: 5px;
+}}
 </style>
 </head>
 <body>
+
 <h1>QA API Automation Execution Report</h1>
 
 <div class="card">
@@ -241,22 +240,45 @@ tr:hover {{ background-color: #f1f1f1; }}
 """
 
 # ----------------------------
-# ADD TEST CASES AND BUFFERS
+# TESTCASE SUMMARY TABLE
 # ----------------------------
-for tc in testcases:
+html_content += """
+<h2 style="text-align:center;">Test Case Summary</h2>
+<table>
+<tr>
+<th>#</th>
+<th>Test Case Name</th>
+<th>Status</th>
+<th>Session ID</th>
+<th>Duration</th>
+</tr>
+"""
+for i, tc in enumerate(testcases, start=1):
+    session_value = " | ".join(tc["buffers"].values()) if tc.get("buffers") else ""
+    status_class = "pass" if tc["status"] == "Passed" else "fail"
+    html_content += f"""
+    <tr>
+        <td>{i}</td>
+        <td><a href="javascript:void(0);" onclick="openTestCase({i})" style="text-decoration:none;color:#007bff;"><b>{tc['name']}</b></a></td>
+        <td class="{status_class}">{tc['status']}</td>
+        <td>{session_value}</td>
+        <td>{tc['total_duration']}</td>
+    </tr>
+    """
+html_content += "</table>"
+
+# ----------------------------
+# TEST CASE DETAILS (COLLAPSIBLE)
+# ----------------------------
+for i, tc in enumerate(testcases, start=1):
+    buffer_html = " | ".join(tc["buffers"].values()) if tc.get("buffers") else ""
     tc_class = "fail" if tc["status"]=="Failed" else "pass"
-
-    # Prepare session/buffer info
-    buffer_html = ""
-    if tc.get("buffers"):
-        buffer_html = " | ".join([f"{v}" for k,v in tc["buffers"].items()])
-
-    html_content += (f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> "
-                     f"(Session Id: {buffer_html})"
-                     f"Duration:{tc['total_duration']}</h2>")
-
-    # Steps table
-    html_content += """
+    html_content += f"""
+    <div id="tc{i}">
+    <button id="btn{i}" class="collapsible">
+    {tc['name']}  
+    </button>
+    <div class="content">
     <table>
     <tr>
         <th>Step Code</th>
@@ -277,9 +299,38 @@ for tc in testcases:
             <td class="{status_class}">{step['status']}</td>
         </tr>
         """
-    html_content += "</table>"
+    html_content += "</table></div></div>"
 
-html_content += "</body></html>"
+# ----------------------------
+# JAVASCRIPT FOR COLLAPSIBLE + SUMMARY CLICK
+# ----------------------------
+html_content += """
+<script>
+var coll = document.getElementsByClassName("collapsible");
+for (var i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+        content.style.display = "none";
+    } else {
+        content.style.display = "block";
+    }
+  });
+}
+
+function openTestCase(i) {
+  var btn = document.getElementById("btn" + i);
+  var content = btn.nextElementSibling;
+  content.scrollIntoView({behavior: "smooth", block: "start"});
+  if (content.style.display !== "block") {
+      btn.click();
+  }
+}
+</script>
+</body>
+</html>
+"""
 
 # ----------------------------
 # SAVE HTML REPORT
