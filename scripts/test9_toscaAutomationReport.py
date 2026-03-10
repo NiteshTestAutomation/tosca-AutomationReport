@@ -6,7 +6,7 @@ from datetime import datetime
 # ----------------------------
 # CONFIGURATION
 # ----------------------------
-INPUT_FOLDER = r"C:\Reports\9March"     # Folder containing Tosca JSON files
+INPUT_FOLDER = r"C:\Reports\10March"     # Folder containing Tosca JSON files
 OUTPUT_FOLDER = r"C:\AutomationReports"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
@@ -100,8 +100,18 @@ for file in INPUT_FILES:
                 steps = []
 
                 for line in body_lines[1:]:
+                    # step_name = line.get("Name", "").strip()
+                    # if step_name == "":
+                    #     continue
+
                     step_name = line.get("Name", "").strip()
+
+                    # Skip empty steps
                     if step_name == "":
+                        continue
+
+                    # Ignore steps not in mapping
+                    if step_name not in step_details_map:
                         continue
 
                     details = line.get("Detail", "").strip()
