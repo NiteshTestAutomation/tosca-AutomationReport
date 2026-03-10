@@ -243,6 +243,7 @@ for tc in testcases:
     # Add session value directly in heading
     html_content += f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> (Session Id: {session_value})</h2>"
 
+
     # Steps table
     html_content += """
     <table>
