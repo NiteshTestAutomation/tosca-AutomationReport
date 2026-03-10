@@ -72,6 +72,7 @@ if not INPUT_FILES:
 
 print(f"Found {len(INPUT_FILES)} JSON files")
 
+
 # ----------------------------
 # PARSE JSON AND MERGE TEST CASES
 # ----------------------------
@@ -81,6 +82,25 @@ total_steps_passed = 0
 total_steps_failed = 0
 total_tc_passed = 0
 total_tc_failed = 0
+
+def sum_durations(steps):
+    total_ms = 0
+
+    for step in steps:
+        duration = step.get("duration", "").strip()
+        if duration:
+            try:
+                mins_secs, ms = duration.split(".")
+                mins, secs = mins_secs.split(":")
+                total_ms += (int(mins) * 60 + int(secs)) * 1000 + int(ms)
+            except:
+                pass
+
+    minutes = total_ms // 60000
+    seconds = (total_ms % 60000) // 1000
+    milliseconds = total_ms % 1000
+
+    return f"{minutes:02}:{seconds:02}.{milliseconds:03}"
 
 for file in INPUT_FILES:
     with open(file, "r", encoding="utf-8") as f:
@@ -141,6 +161,7 @@ for file in INPUT_FILES:
 
                 if steps:
                     total_steps += len(steps)
+                    tc_total_duration = sum_durations(steps)
                     total_steps_passed += sum(1 for s in steps if s["status"] == "Passed")
                     total_steps_failed += sum(1 for s in steps if s["status"] == "Failed")
 
@@ -155,7 +176,8 @@ for file in INPUT_FILES:
                         "steps": steps,
                         "status": tc_status,
                         "source": os.path.basename(file),
-                        "buffers": tc_buffers
+                        "buffers": tc_buffers,
+                        "total_duration": tc_total_duration
                     })
 
 # ----------------------------
@@ -229,7 +251,9 @@ for tc in testcases:
     if tc.get("buffers"):
         buffer_html = " | ".join([f"{v}" for k,v in tc["buffers"].items()])
 
-    html_content += f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> (Session: {buffer_html})</h2>"
+    html_content += (f"<h2>{tc['name']} - <span class='{tc_class}'>{tc['status']}</span> "
+                     f"(Session Id: {buffer_html})"
+                     f"Duration:{tc['total_duration']}</h2>")
 
     # Steps table
     html_content += """
