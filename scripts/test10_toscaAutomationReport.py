@@ -7,7 +7,7 @@ from datetime import datetime
 # ----------------------------
 # CONFIGURATION
 # ----------------------------
-INPUT_FOLDER = r"C:\Reports\10March"
+INPUT_FOLDER = r"C:\Reports\11March"
 OUTPUT_FOLDER = r"C:\AutomationReports"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
