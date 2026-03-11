@@ -169,7 +169,8 @@ html_content = f"""
 <html>
 <head>
 <title>Tosca Execution Report</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+//<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="chart.min.js"></script>
 <style>
 body {{ font-family: Arial, sans-serif; background: #f4f6f9; font-size: 13px; margin: 0; padding: 0; }}
 h1 {{ text-align: center; margin-top: 20px; }}
