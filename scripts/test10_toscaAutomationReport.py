@@ -7,7 +7,7 @@ from datetime import datetime
 # ----------------------------
 # CONFIGURATION
 # ----------------------------
-INPUT_FOLDER = r"C:\Reports\11March"
+INPUT_FOLDER = r"C:\Reports\12March"
 OUTPUT_FOLDER = r"C:\AutomationReports"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
@@ -164,12 +164,14 @@ environment_name = "UAT"
 executed_user = "Nitesh Badge"
 module_name = "Transfer"
 testing_type = "Smoke Suite"
+execution_date = datetime.now().strftime("%d %B %Y")
 
 html_content = f"""
 <html>
 <head>
 <title>Tosca Execution Report</title>
 //<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script src="chart.min.js"></script>
 <style>
 body {{ font-family: Arial, sans-serif; background: #f4f6f9; font-size: 13px; margin: 0; padding: 0; }}
@@ -205,7 +207,7 @@ tr:hover {{ background-color: #f1f1f1; }}
  <h2 style="margin-top: 5px; margin-bottom: 10px;">{project_name} Execution Summary</h2>
  <p><b>Module Name:</b> {module_name} &nbsp;|&nbsp; 
     <b>Environment:</b> {environment_name} &nbsp;|&nbsp;    
-    <b>Test Execution:</b> {testing_type} &nbsp;|&nbsp; 
+    <b>Execution Date:</b> {execution_date} &nbsp;|&nbsp; 
     <b>Executed By:</b> {executed_user}</p>
 </div>
 
@@ -220,7 +222,7 @@ tr:hover {{ background-color: #f1f1f1; }}
 <div class="chart-container-flex">
   <div class="chart-box">
     <h4 style="text-align:center;">TestCase Status</h4>
-    <canvas id="tcChart" width="200" height="200"></canvas>
+    <canvas id="tcChart" width="230" height="200"></canvas>
   </div>
   <div class="chart-box">
     <h4 style="text-align:center;">TestCase Duration (sec)</h4>
