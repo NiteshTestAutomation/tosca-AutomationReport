@@ -225,7 +225,7 @@ tr:hover {{ background-color: #f1f1f1; }}
     <canvas id="tcChart" width="230" height="200"></canvas>
   </div>
   <div class="chart-box">
-    <h4 style="text-align:center;">TestCase Duration (sec)</h4>
+    <h4 style="text-align:center;">TestCase Duration (seconds)</h4>
     <canvas id="tcDurationChart" width="200" height="200"></canvas>
   </div>
 </div>
@@ -301,10 +301,16 @@ for i, tc in enumerate(testcases, start=1):
 # JAVASCRIPT FOR COLLAPSIBLE + CHARTS
 # ----------------------------
 def shorten_name(name, max_len=20):
-    # keep only text after last dash
+    # Replace International with Int
+    name = name.replace("International", "")
+
+    # Keep only text after last dash
     short = name.split("-")[-1].strip()
+
+    # Trim if too long
     if len(short) > max_len:
         short = short[:17] + "…"
+
     return short
 
 tc_names_js = ",".join([f'"{shorten_name(tc["name"])}"' for tc in testcases])
